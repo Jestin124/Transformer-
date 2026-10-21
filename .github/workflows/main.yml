@@ -1,5 +1,5 @@
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+name: Build Android APK
+
 on:
   workflow_dispatch:
   push:
@@ -31,45 +31,22 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Check project files
-        run: |
-          test -f package.json || {
-            echo "ERROR: package.json is missing from repository root."
-            exit 1
-          }
-
-          node -e "
-            const p = require('./package.json');
-            if (!p.scripts || !p.scripts.build) {
-              console.error('ERROR: Missing npm build script.');
-              process.exit(1);
-            }
-            console.log('Project:', p.name || 'Transformer');
-          "
-
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
       - name: Build web app
         run: npm run build
 
-      - name: Check Capacitor configuration
-        run: |
-          if [ ! -f capacitor.config.json ] && \
-             [ ! -f capacitor.config.ts ] && \
-             [ ! -f capacitor.config.js ]; then
-            echo "ERROR: Capacitor configuration is missing."
-            exit 1
-          fi
-
-      - name: Check and prepare Android platform
+      - name: Prepare Android platform
         run: |
           if [ ! -d android ]; then
             npx cap add android
           fi
+
+      - name: Add notification permission
+        run: |
+          M=android/app/src/main/AndroidManifest.xml
+          grep -q POST_NOTIFICATIONS $M || sed -i 's#</manifest>#    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />\n</manifest>#' $M
 
       - name: Sync Capacitor
         run: npx cap sync android
@@ -87,4 +64,3 @@ jobs:
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 14
-          
