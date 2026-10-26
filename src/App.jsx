@@ -38,133 +38,7 @@ import {
   Flame,
   Share2,
   MessageSquare,
-  Eye,
-  EyeOff
 } from 'lucide-react';
-
-// Minimal auth prototype only.
-// No backend is configured in this project.
-// This screen must be replaced by a real auth provider before production use.
-const AUTH_SESSION_KEY = 'transformer_auth_session';
-
-function validateLoginIdentifier(value) {
-  const trimmed = (value || '').trim();
-  if (!trimmed) return 'Enter your email or username.';
-  if (trimmed.includes('@')) {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailPattern.test(trimmed) ? '' : 'Use a valid email address.';
-  }
-  if (trimmed.length < 3 || /\s/.test(trimmed)) {
-    return 'Username must be at least 3 characters and contain no spaces.';
-  }
-  return '';
-}
-
-function validateLoginPassword(value) {
-  if (!value) return 'Password is required.';
-  if (value.length < 8) return 'Password must be at least 8 characters long.';
-  if ((value || '').trim() !== value) return 'Password cannot start or end with spaces.';
-  return '';
-}
-
-function LoginScreen({
-  loginForm,
-  setLoginForm,
-  showPassword,
-  setShowPassword,
-  loginError,
-  loginLoading,
-  onSubmit,
-}) {
-  return (
-    <div className="min-h-screen bg-[#F6F0E3] text-slate-900 antialiased">
-      <div className="mx-auto flex min-h-screen max-w-md items-center justify-center p-4 sm:p-6">
-        <div className="w-full overflow-hidden rounded-[32px] border border-[#E7DEC8] bg-white shadow-2xl shadow-[#173F35]/10">
-          <div className="bg-[#173F35] px-6 py-7 text-white">
-            <div className="flex items-center gap-3">
-              <TransformerEmblem size="lg" />
-              <div>
-                <div className="font-serif text-xl font-black tracking-[0.18em] text-[#D5AD59]">TRANSFORMER</div>
-                <p className="mt-1 text-[11px] uppercase tracking-[0.22em] text-white/70">Faith • Discipline • Growth</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-6 p-6">
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#173F35]">Secure sign in</p>
-              <h1 className="mt-2 font-serif text-2xl font-black text-slate-900">Welcome back</h1>
-              <p className="mt-2 text-sm text-slate-600">
-                No authentication backend is currently configured in this project.
-                This screen is a demo UI gate only and cannot be treated as production authentication.
-              </p>
-            </div>
-
-            <form onSubmit={onSubmit} className="space-y-4" noValidate>
-              <div className="space-y-2">
-                <label htmlFor="login-identifier" className="block text-[11px] font-bold uppercase tracking-[0.15em] text-slate-500">
-                  Email or username
-                </label>
-                <input
-                  id="login-identifier"
-                  type="text"
-                  value={loginForm.identifier}
-                  onChange={(event) => setLoginForm((prev) => ({ ...prev, identifier: event.target.value }))}
-                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#173F35] focus:outline-none"
-                  placeholder="you@example.com or username"
-                  autoComplete="username"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="login-password" className="block text-[11px] font-bold uppercase tracking-[0.15em] text-slate-500">
-                  Password
-                </label>
-                <div className="relative">
-                  <input
-                    id="login-password"
-                    type={showPassword ? 'text' : 'password'}
-                    value={loginForm.password}
-                    onChange={(event) => setLoginForm((prev) => ({ ...prev, password: event.target.value }))}
-                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3 pr-11 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#173F35] focus:outline-none"
-                    placeholder="Enter your password"
-                    autoComplete="current-password"
-                  />
-                  <button
-                    type="button"
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                    className="absolute inset-y-0 right-3 flex items-center text-slate-500 hover:text-[#173F35]"
-                    onClick={() => setShowPassword((prev) => !prev)}
-                  >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </button>
-                </div>
-              </div>
-
-              {loginError && (
-                <div className="rounded-2xl border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700" role="alert">
-                  {loginError}
-                </div>
-              )}
-
-              <button
-                type="submit"
-                disabled={loginLoading}
-                className="w-full rounded-2xl bg-[#173F35] px-4 py-3 text-sm font-black text-[#D5AD59] transition hover:bg-[#1f4e42] disabled:cursor-not-allowed disabled:opacity-70"
-              >
-                {loginLoading ? 'Signing in...' : 'Log in'}
-              </button>
-            </form>
-
-            <div className="rounded-2xl border border-[#E7DEC8] bg-[#F6F0E3] p-3 text-xs leading-relaxed text-slate-700">
-              <strong className="font-black text-[#173F35]">Important:</strong> This demo gate is intentionally not secure until a real authentication backend is connected.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 // ============================================================================
 // 1. OFFICIAL TRANSFORMER BRAND EMBLEM (Pilgrim, Mountain, Cross & Bible)
@@ -419,115 +293,24 @@ const THEMES = [
 // 3. THE 12 BIBLICAL PRINCIPLES DIRECTORY
 // ==========================================================================
 const ALL_PRINCIPLES = [
-  {
-    id: 1,
-    title: 'Put God first',
-    ref: 'Proverbs 3:5–6',
-    meaning: 'Trust God and seek His guidance when making decisions.',
-    action: 'Begin the day with prayer and Bible reading before becoming occupied with other activities.',
-    scriptureText: 'Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths.'
-  },
-  {
-    id: 2,
-    title: 'Respect everyone',
-    ref: 'Romans 12:10',
-    meaning: 'Treat people with kindness, dignity, and consideration.',
-    action: 'Listen carefully, speak respectfully, and avoid unnecessary arguments.',
-    scriptureText: 'Be kindly affectioned one to another with brotherly love; in honour preferring one another.'
-  },
-  {
-    id: 3,
-    title: 'Speak less and wisely',
-    ref: 'James 1:19',
-    meaning: 'Be quick to listen, slow to speak, and slow to become angry.',
-    action: 'Pause before responding when you feel frustrated or provoked.',
-    scriptureText: 'Wherefore, my beloved brethren, let every man be swift to hear, slow to speak, slow to wrath.'
-  },
-  {
-    id: 4,
-    title: 'Be serious and responsible',
-    ref: 'Colossians 3:23',
-    meaning: 'Work sincerely and give your best effort in all assignments.',
-    action: 'Complete an important responsibility without waiting for someone to remind you.',
-    scriptureText: 'And whatsoever ye do, do it heartily, as to the Lord, and not unto men.'
-  },
-  {
-    id: 5,
-    title: 'Improve focus',
-    ref: 'Proverbs 4:25–27',
-    meaning: 'Keep your attention on worthwhile goals and avoid unnecessary distractions.',
-    action: 'Complete one important task before spending time on entertainment or social feeds.',
-    scriptureText: 'Let thine eyes look right on, and let thine eyelids look straight before thee. Turn not to the right hand nor to the left: remove thy foot from evil.'
-  },
-  {
-    id: 6,
-    title: 'Stop unnecessary reassurance-seeking',
-    ref: 'Philippians 4:6–7',
-    meaning: 'Bring concerns to God in prayer while taking sensible steps forward.',
-    action: 'Pause, pray, and identify one practical step instead of seeking anxious validation.',
-    scriptureText: 'Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God.'
-  },
-  {
-    id: 7,
-    title: 'Wait patiently',
-    ref: 'Psalm 27:14',
-    meaning: 'Wait with courage and avoid making decisions impulsively.',
-    action: 'Give yourself time to think and pray before reacting to difficult situations.',
-    scriptureText: 'Wait on the LORD: be of good courage, and he shall strengthen thine heart: wait, I say, on the LORD.'
-  },
-  {
-    id: 8,
-    title: 'Act toward your dreams',
-    ref: 'James 2:17',
-    meaning: 'Good intentions should lead to practical, daily execution.',
-    action: 'Start one tangible task you have been postponing today.',
-    scriptureText: 'Even so faith, if it hath not works, is dead, being alone.'
-  },
-  {
-    id: 9,
-    title: 'Plan wisely',
-    ref: 'Proverbs 21:5',
-    meaning: 'Thoughtful planning helps people use time and resources effectively.',
-    action: 'Prepare a realistic timetable and priority checklist for the following day.',
-    scriptureText: 'The thoughts of the diligent tend only to plenteousness; but of every one that is hasty only to want.'
-  },
-  {
-    id: 10,
-    title: "Trust God's plan",
-    ref: 'Proverbs 16:3',
-    meaning: 'Commit your plans to God while continuing to act responsibly.',
-    action: 'Review your primary goal, pray over it, and take the next sensible step.',
-    scriptureText: 'Commit thy works unto the LORD, and thy thoughts shall be established.'
-  },
-  {
-    id: 11,
-    title: 'Practise self-control',
-    ref: 'Galatians 5:22–23',
-    meaning: 'Develop discipline in your words, emotional choices, and behavior.',
-    action: 'Avoid one habit or distraction that regularly interferes with your responsibilities.',
-    scriptureText: 'But the fruit of the Spirit is love, joy, peace, longsuffering, gentleness, goodness, faith, Meekness, temperance: against such there is no law.'
-  },
-  {
-    id: 12,
-    title: 'Manage money wisely',
-    ref: 'Luke 14:28',
-    meaning: 'Consider costs and plan your material resources carefully.',
-    action: 'Review your spending or plan how to use available resources responsibly.',
-    scriptureText: 'For which of you, intending to build a tower, sitteth not down first, and counteth the cost, whether he have sufficient to finish it?'
-  }
+  { id: 1, title: 'Put God first', ref: 'Proverbs 3:5–6', meaning: 'Trust God and seek His guidance when making decisions.', action: 'Begin the day with prayer and Bible reading before becoming occupied with other activities.', scriptureText: 'Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths.' },
+  { id: 2, title: 'Respect everyone', ref: 'Romans 12:10', meaning: 'Treat people with kindness, dignity, and consideration.', action: 'Listen carefully, speak respectfully, and avoid unnecessary arguments.', scriptureText: 'Be kindly affectioned one to another with brotherly love; in honour preferring one another.' },
+  { id: 3, title: 'Speak less and wisely', ref: 'James 1:19', meaning: 'Be quick to listen, slow to speak, and slow to become angry.', action: 'Pause before responding when you feel frustrated or provoked.', scriptureText: 'Wherefore, my beloved brethren, let every man be swift to hear, slow to speak, slow to wrath.' },
+  { id: 4, title: 'Be serious and responsible', ref: 'Colossians 3:23', meaning: 'Work sincerely and give your best effort in all assignments.', action: 'Complete an important responsibility without waiting for someone to remind you.', scriptureText: 'And whatsoever ye do, do it heartily, as to the Lord, and not unto men.' },
+  { id: 5, title: 'Improve focus', ref: 'Proverbs 4:25–27', meaning: 'Keep your attention on worthwhile goals and avoid unnecessary distractions.', action: 'Complete one important task before spending time on entertainment or social feeds.', scriptureText: 'Let thine eyes look right on, and let thine eyelids look straight before thee. Turn not to the right hand nor to the left: remove thy foot from evil.' },
+  { id: 6, title: 'Stop unnecessary reassurance-seeking', ref: 'Philippians 4:6–7', meaning: 'Bring concerns to God in prayer while taking sensible steps forward.', action: 'Pause, pray, and identify one practical step instead of seeking anxious validation.', scriptureText: 'Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God.' },
+  { id: 7, title: 'Wait patiently', ref: 'Psalm 27:14', meaning: 'Wait with courage and avoid making decisions impulsively.', action: 'Give yourself time to think and pray before reacting to difficult situations.', scriptureText: 'Wait on the LORD: be of good courage, and he shall strengthen thine heart: wait, I say, on the LORD.' },
+  { id: 8, title: 'Act toward your dreams', ref: 'James 2:17', meaning: 'Good intentions should lead to practical, daily execution.', action: 'Start one tangible task you have been postponing today.', scriptureText: 'Even so faith, if it hath not works, is dead, being alone.' },
+  { id: 9, title: 'Plan wisely', ref: 'Proverbs 21:5', meaning: 'Thoughtful planning helps people use time and resources effectively.', action: 'Prepare a realistic timetable and priority checklist for the following day.', scriptureText: 'The thoughts of the diligent tend only to plenteousness; but of every one that is hasty only to want.' },
+  { id: 10, title: "Trust God's plan", ref: 'Proverbs 16:3', meaning: 'Commit your plans to God while continuing to act responsibly.', action: 'Review your primary goal, pray over it, and take the next sensible step.', scriptureText: 'Commit thy works unto the LORD, and thy thoughts shall be established.' },
+  { id: 11, title: 'Practise self-control', ref: 'Galatians 5:22–23', meaning: 'Develop discipline in your words, emotional choices, and behavior.', action: 'Avoid one habit or distraction that regularly interferes with your responsibilities.', scriptureText: 'But the fruit of the Spirit is love, joy, peace, longsuffering, gentleness, goodness, faith, Meekness, temperance: against such there is no law.' },
+  { id: 12, title: 'Manage money wisely', ref: 'Luke 14:28', meaning: 'Consider costs and plan your material resources carefully.', action: 'Review your spending or plan how to use available resources responsibly.', scriptureText: 'For which of you, intending to build a tower, sitteth not down first, and counteth the cost, whether he have sufficient to finish it?' }
 ];
 
-// ============================================================================
-// Complete 66-book index for the online KJV reader. Chapter text is fetched from a public Bible API.
-// Internet is required for full chapter text; curated excerpts below remain available as a limited fallback.
 const BIBLE_BOOK_INDEX = [
   ['Genesis',50],['Exodus',40],['Leviticus',27],['Numbers',36],['Deuteronomy',34],['Joshua',24],['Judges',21],['Ruth',4],['1 Samuel',31],['2 Samuel',24],['1 Kings',22],['2 Kings',25],['1 Chronicles',29],['2 Chronicles',36],['Ezra',10],['Nehemiah',13],['Esther',10],['Job',42],['Psalms',150],['Proverbs',31],['Ecclesiastes',12],['Song of Solomon',8],['Isaiah',66],['Jeremiah',52],['Lamentations',5],['Ezekiel',48],['Daniel',12],['Hosea',14],['Joel',3],['Amos',9],['Obadiah',1],['Jonah',4],['Micah',7],['Nahum',3],['Habakkuk',3],['Zephaniah',3],['Haggai',2],['Zechariah',14],['Malachi',4],['Matthew',28],['Mark',16],['Luke',24],['John',21],['Acts',28],['Romans',16],['1 Corinthians',16],['2 Corinthians',13],['Galatians',6],['Ephesians',6],['Philippians',4],['Colossians',4],['1 Thessalonians',5],['2 Thessalonians',3],['1 Timothy',6],['2 Timothy',4],['Titus',3],['Philemon',1],['Hebrews',13],['James',5],['1 Peter',5],['2 Peter',3],['1 John',5],['2 John',1],['3 John',1],['Jude',1],['Revelation',22]
 ].map(([name, chapters], index) => ({ name, chapters, testament: index < 39 ? 'Old Testament' : 'New Testament' }));
 
-// 4. CURATED BILINGUAL SCRIPTURE EXCERPTS (English KJV & Malayalam).
-// This is not a complete Bible: only the verses listed below are available offline.
- // Verify Malayalam wording and obtain any required translation permissions before release.
-// ============================================================================
 const EXPANDED_BIBLE_BOOKS = [
   {
     id: 'isaiah22',
@@ -536,26 +319,10 @@ const EXPANDED_BIBLE_BOOKS = [
     testament: 'OT',
     topic: 'Divine Authority & The Key of David',
     verses: [
-      {
-        num: 20,
-        en: 'And it shall come to pass in that day, that I will call my servant Eliakim the son of Hilkiah:',
-        ml: 'അന്നാളിൽ ഞാൻ ഹിൽക്കീയാവിന്റെ മകനായ എല്യാക്കീം എന്ന എന്റെ ദാസനെ വിളിക്കും;'
-      },
-      {
-        num: 21,
-        en: 'And I will clothe him with thy robe, and strengthen him with thy girdle, and I will commit thy government into his hand: and he shall be a father to the inhabitants of Jerusalem, and',
-        ml: 'ഞാൻ അവനെ നിന്റെ അങ്കി ധരിപ്പിച്ചു നിന്റെ കച്ചകൊണ്ടു അവനെ അരമുറുക്കും; അവൻ യിരുയേലേത്തിന്റെ നിവാസികൾക്കു പിതാവായിരിക്കും.'
-      },
-      {
-        num: 22,
-        en: 'And the key of the house of David will I lay upon his shoulder; so he shall open, and none shall shut; and he shall shut, and none shall open.',
-        ml: 'ഞാൻ ദാവീത് ഗൃഹത്തിന്റെ താക്കോൽ അവന്റെ തോളിൽ വെക്കും; അവൻ തുറന്നാൽ ആരും അടക്കില്ല; അവൻ അടച്ചാൽ ആരും തുറക്കില്ല.'
-      },
-      {
-        num: 23,
-        en: 'And I will fasten him as a nail in a sure place; and he shall be for a glorious throne to his father’s house.',
-        ml: 'ഞാൻ അവനെ ഉറപ്പുള്ള സ്ഥലത്തു ഒരു ആണിയായി തറെക്കും; അവൻ തന്റെ പിതൃഭവനത്തിൽ മഹത്വമുള്ള സിംഹാസനം ആയിരിക്കും.'
-      }
+      { num: 20, en: 'And it shall come to pass in that day, that I will call my servant Eliakim the son of Hilkiah:', ml: 'അന്നാളിൽ ഞാൻ ഹിൽക്കീയാവിന്റെ മകനായ എല്യാക്കീം എന്ന എന്റെ ദാസനെ വിളിക്കും;' },
+      { num: 21, en: 'And I will clothe him with thy robe, and strengthen him with thy girdle, and I will commit thy government into his hand: and he shall be a father to the inhabitants of Jerusalem, and to the house of Judah.', ml: 'ഞാൻ അവനെ നിന്റെ അങ്കി ധരിപ്പിച്ചു നിന്റെ കച്ചകൊണ്ടു അവനെ അരമുറുക്കും; അവൻ യിരുയേലേം നിവാസികൾക്കും യഹൂദാ വീട്ടിനും ഒരു പിതാവാകും.' },
+      { num: 22, en: 'And the key of the house of David will I lay upon his shoulder; so he shall open, and none shall shut; and he shall shut, and none shall open.', ml: 'ഞാൻ ദാവീദ് ഗൃഹത്തിന്റെ താക്കോൽ അവന്റെ തോളിൽ വെക്കും; അവൻ തുറന്നാൽ ആരും അടക്കമറ്റില്ല; അടച്ചാൽ ആരും തുറക്കമറ്റില്ല.' },
+      { num: 23, en: 'And I will fasten him as a nail in a sure place; and he shall be for a glorious throne to his father’s house.', ml: 'ഞാൻ അവനെ ഉറപ്പുള്ള സ്ഥലത്തു ഒരു ആണിയായി തറെക്കും; അവൻ തന്റെ പിതൃഭവനത്തിന്റെ മഹിമയുള്ള സിംഹാസനമായിരിക്കും.' }
     ]
   },
   {
@@ -565,260 +332,18 @@ const EXPANDED_BIBLE_BOOKS = [
     testament: 'OT',
     topic: 'Wholehearted Trust & Divine Direction',
     verses: [
-      { num: 1, en: 'My son, forget not my law; but let thine heart keep my commandments:', ml: 'മകനേ, എന്റെ ഉപദേശം മറക്കരുതു; നിന്റെ ഹൃദയം എന്റെ കല്പനകളെ കാത്തുകൊളക.' },
-      { num: 2, en: 'For length of days, and long life, and peace, shall they add to thee.', ml: 'അവ ദീർഘായുസ്സും ജീവകാലവും സമാധാനവും നിനക്കു വർദ്ധിപ്പിച്ചുതരും.' },
-      { num: 3, en: 'Let not mercy and truth forsake thee: bind them about thy neck; write them upon the table of thine heart:', ml: 'ദയയും വിശ്വസ്തതയും നിന്നെ വിട്ടുപോകരുതു; അവയെ നിന്റെ കഴുത്തിൽ കെട്ടി നിന്റെ ഹൃദയപാളിയിൽ എഴുതിയിരിക്ക.' },
-      { num: 4, en: 'So shalt thou find favour and good understanding in the sight of God and man.', ml: 'അങ്ങനെ നീ ദൈവത്തിന്റെയും മനുഷ്യരുടെയും ദൃഷ്ടിയിൽ കൃപയും സൽബുദ്ധിയും കൈവരിക്കും.' },
-      { num: 5, en: 'Trust in the LORD with all thine heart; and lean not unto thine own understanding.', ml: 'പൂർണ്ണഹൃദയത്തോടെ യഹോവയിൽ ആശ്രയിക്ക; സ്വന്ത വിവേകത്തിൽ ഊന്നരുതു.' },
-      { num: 6, en: 'In all thy ways acknowledge him, and he shall direct thy paths.', ml: 'നിന്റെ എല്ലാ വഴികളിലും അവനെ നിനച്ചുകൊൾക; അവൻ നിന്റെ പാതകളെ നേരെയാകുമാക്കി.directs.' },
-      { num: 7, en: 'Be not wise in thine own eyes: fear the LORD, and depart from evil.', ml: 'നിനക്കു തന്നേ നീ ജ്ഞാനിയായി തോന്നരുതു; യഹോവയെ ഭയപ്പെട്ടു ദോഷം വിട്ട്.' },
-      { num: 8, en: 'It shall be health to thy navel, and marrow to thy bones.', ml: 'അതു നിന്റെ ശരീരത്തിന്നു സൌഖ്യവും നിന്റെ അസ്ഥികൾക്കു തണുപ്പും ആയിരിക്കും.' }
-    ]
-  },
-  {
-    id: 'proverbs4',
-    nameEn: 'Proverbs 4',
-    nameMl: 'സദൃശവാക്യങ്ങൾ 4',
-    testament: 'OT',
-    topic: 'Guarding Your Heart & Unshakable Focus',
-    verses: [
-      { num: 20, en: 'My son, attend to my words; incline thine ear unto my sayings.', ml: 'മകനേ, എന്റെ വാക്കുകളെ ശ്രദ്ധിക്ക; എന്റെ വചനങ്ങളിലേക്കു നിന്റെ ചെവി തിരിയ്ക്കു.' },
-      { num: 23, en: 'Keep thy heart with all diligence; for out of it are the issues of life.', ml: 'സകലജാഗ്രതയോടുംകൂടെ നിന്റെ ഹൃദയത്തെ കാത്തുകൊൾക; ജീവന്റെ ഉത്ഭവം അതിൽ നിന്നാണ്.' },
-      { num: 24, en: 'Put away from thee a froward mouth, and perverse lips put far from thee.', ml: 'വായുടെ വക്രത നിന്നിൽനിന്നു നീക്കിക്കളക; അധരങ്ങളുടെ കോട്ടവും നിന്നെ വിട്ട് മാറ്റിക്കളക.' },
-      { num: 25, en: 'Let thine eyes look right on, and let thine eyelids look straight before thee.', ml: 'നിന്റെ കണ്ണു നേരെ നോക്കട്ടെ; നിന്റെ കൺപോളം മുൻപോട്ടു തന്നേ ഇരിക്കട്ടെ.' },
-      { num: 26, en: 'Ponder the path of thy feet, and let all thy ways be established.', ml: 'നിന്റെ കാലിന്റെ പാതയെ നിരപ്പാക്കുക; നിന്റെ വഴികളൊക്കെയും സ്ഥിരമായിരിക്കും.' },
-      { num: 27, en: 'Turn not to the right hand nor to the left: remove thy foot from evil.', ml: 'വലത്തോട്ടോ ഇടത്തോട്ടോ തിരിയരുതു; നിന്റെ കാലിനെ ദോഷത്തിൽനിന്നു മാറ്റിക്കളക.' }
-    ]
-  },
-  {
-    id: 'proverbs16',
-    nameEn: 'Proverbs 16',
-    nameMl: 'സദൃശവാക്യങ്ങൾ 16',
-    testament: 'OT',
-    topic: 'Committing Plans to God & Humility',
-    verses: [
-      { num: 1, en: 'The preparations of the heart in man, and the answer of the tongue, is from the LORD.', ml: 'മനസ്സിലെ നിരൂപണങ്ങൾ മനുഷ്യന്നുള്ളവ; നാവിന്റെ ഉത്തരമോ യഹോവയിങ്കൽനിന്നുള്ളതാണ്.' },
-      { num: 2, en: 'All the ways of a man are clean in his own eyes; but the LORD weigheth the spirits.', ml: 'മനുഷ്യന്റെ വഴികളൊക്കെയും തന്റെ ദൃഷ്ടിയിൽ വെടിപ്പുള്ളതായി തോന്നുന്നു; യാഹോവയാണ് ആത്മാക്കളെ തൂക്കിക്കാണുന്നത്.' },
-      { num: 3, en: 'Commit thy works unto the LORD, and thy thoughts shall be established.', ml: 'നിന്റെ പ്രവൃത്തികളെ യഹോവെക്കു സമർപ്പിക്ക; എന്നാൽ നിന്റെ ഉദ്ദേശങ്ങൾ ഉറപ്പിക്കും.' },
-      { num: 9, en: 'A man’s heart deviseth his way: but the LORD directeth his steps.', ml: 'മനുഷ്യന്റെ ഹൃദയം തന്റെ വഴിയെ നിരൂപിക്കുന്നു; എന്നാൽ യഹോവ അവന്റെ കാലടികളിൽ വഴിനടത്തുന്നു.' },
-      { num: 16, en: 'How much better is it to get wisdom than gold! and to get understanding rather to be chosen than silver!', ml: 'പൊന്നിനെക്കാൾ ജ്ഞാനം സമ്പാദിക്കുന്നതു എത്രയോ നല്ലതു! വെള്ളിയേക്കാൾ ബുദ്ധി കൈവരിക്കുന്നതു നന്നല്ലോ!' }
-    ]
-  },
-  {
-    id: 'proverbs21',
-    nameEn: 'Proverbs 21',
-    nameMl: 'സദൃശവാക്യങ്ങൾ 21',
-    testament: 'OT',
-    topic: 'The Diligent Planner vs. The Hasty',
-    verses: [
-      { num: 2, en: 'Every way of a man is right in his own eyes: but the LORD pondereth the hearts.', ml: 'മനുഷ്യന്റെ വഴി ഒക്കെയും തന്റെ കണ്ണിൽ നേരായി തോന്നുന്നു; യഹോവയോ ഹൃദയം നോക്കുന്നു.' },
-      { num: 3, en: 'To do justice and judgment is more acceptable to the LORD than sacrifice.', ml: 'നീതിയും ന്യായവും പ്രവർത്തിക്കുന്നതു യാഗത്തെക്കാൾ യഹോവെക്കു പ്രസാദമുള്ളതാണ്.' },
-      { num: 5, en: 'The thoughts of the diligent tend only to plenteousness; but of every one that is hasty only to want.', ml: 'ഉത്സാഹിയുടെ വിചാരങ്ങൾ സമൃദ്ധിഹേതുവാകുന്നു; തിടുക്കക്കാരൊക്കെയും കുറവിലേക്കു പോകുന്നു.' },
-      { num: 21, en: 'He that followeth after righteousness and mercy findeth life, righteousness, and honour.', ml: 'നീതിയെയും ദയയെയും പിന്തുടരുന്നവൻ ജീവനെയും നീതിയെയും മാനത്തെയും കാക്കുന്നു.' }
-    ]
-  },
-  {
-    id: 'proverbs27',
-    nameEn: 'Proverbs 27',
-    nameMl: 'സദൃശവാക്യങ്ങൾ 27',
-    testament: 'OT',
-    topic: 'Wisdom for Tomorrow & Iron Sharpening Iron',
-    verses: [
-      { num: 1, en: 'Boast not thyself of to morrow; for thou knowest not what a day may bring forth.', ml: 'നാളത്തെ ദിവസത്തെക്കുറിച്ചു പ്രശംസിക്കരുതു; ഒരു ദിവസം എന്തെല്ലാം വരും എന്ന് നീ അറിയുന്നില്ല.' },
-      { num: 17, en: 'Iron sharpeneth iron; so a man sharpeneth the countenance of his friend.', ml: 'ഇരിമ്പു ഇരിമ്പിന്നു മൂർച്ചകൂട്ടുന്നു; മനുഷ്യൻ തന്റെ സ്നേഹിതന്റെ മുഖം ശുദ്ധമാക്കുന്നു.' },
-      { num: 23, en: 'Be thou diligent to know the state of thy flocks, and look well to thy herds.', ml: 'നിന്റെ ആടുകളുടെ അവസ്ഥ നല്ലവണ്ണം അറിഞ്ഞിരിക്ക; നിന്റെ കന്നുകാലികളെ സൂക്ഷിച്ചുകൊൾക.' }
-    ]
-  },
-  {
-    id: 'psalm23',
-    nameEn: 'Psalm 23',
-    nameMl: 'സങ്കീർത്തനം 23',
-    testament: 'OT',
-    topic: 'The Good Shepherd & Constant Provision',
-    verses: [
-      { num: 1, en: 'The LORD is my shepherd; I shall not want.', ml: 'യഹോവ എന്റെ ഇടയനാകുന്നു; എനിക്കു ഒന്നിന്നും മുട്ടുണ്ടാകയില്ല.' },
-      { num: 2, en: 'He maketh me to lie down in green pastures: he leadeth me beside the still waters.', ml: 'പച്ചയായ പുൽപ്പുറങ്ങളിൽ അവൻ എന്നെ കിടത്തുന്നു; സ്വസ്ഥതയുള്ള വെള്ളത്തിനരികിൽ എന്നെ നടത്തുന്നു.' },
-      { num: 3, en: 'He restoreth my soul: he leadeth me in the paths of righteousness for his name’s sake.', ml: 'എന്റെ പ്രാണനെ അവൻ തണുപ്പിക്കുന്നു; തന്റെ നാമനിമിത്തം എന്നെ നീതിപാതയിൽ നടത്തുന്നു.' },
-      { num: 4, en: 'Yea, though I walk through the valley of the shadow of death, I will fear no evil: for thou art with me; thy rod and thy staff they comfort me.', ml: 'കൂരിരുൾതാഴ്വരയിൽകൂടി നടന്നാലും ഞാൻ ഒരു അനർത്ഥവും ഭയപ്പെടുകയില്ല; നീ എനിക്കൊപ്പം ഇരിക്കുന്നു; നിന്റെ വടി, നിന്റെ വാളുകൾ എന്നെ സമാധാനിപ്പിക്കുന്നു.' },
-      { num: 5, en: 'Thou preparest a table before me in the presence of mine enemies: thou anointest my head with oil; my cup runneth over.', ml: 'എന്റെ ശത്രുക്കൾ കാൺകെ നീ എനിക്കു വിരുന്നൊരുക്കുന്നു; എന്റെ തലയെ എണ്ണയാൽ അഭിഷെകിക്കുന്നു; എന്റെ കപ്പ് നിറയുന്നു.' },
-      { num: 6, en: 'Surely goodness and mercy shall follow me all the days of my life: and I will dwell in the house of the LORD for ever.', ml: 'നന്മയും കരുണയും എന്റെ ആയുഷ്കാലമൊക്കെയും എന്നെ പിന്തുടരും; ഞാൻ യഹോവയുടെ വീട്ടിൽ എന്നേക്കും വസിക്കും.' }
-    ]
-  },
-  {
-    id: 'psalm27',
-    nameEn: 'Psalm 27',
-    nameMl: 'സങ്കീർത്തനം 27',
-    testament: 'OT',
-    topic: 'Light, Salvation & Patient Courage',
-    verses: [
-      { num: 1, en: 'The LORD is my light and my salvation; whom shall I fear? the LORD is the strength of my life; of whom shall I be afraid?', ml: 'യഹോവ എന്റെ വെളിച്ചവും എന്റെ രക്ഷയും ആകുന്നു; ഞാൻ ആരെ ഭയപ്പെടും? യഹോവ എന്റെ ജീവന്റെ ശക്തി; ആരെ ഞാൻ ഭയപ്പെടും?' },
-      { num: 4, en: 'One thing have I desired of the LORD, that will I seek after; that I may dwell in the house of the LORD all the days of my life, to behold the beauty of the LORD, and to enquire in his temple.', ml: 'ഞാൻ യഹോവയോടു ഒരു കാര്യം അപേക്ഷിച്ചു; അതു തന്നേ ഞാൻ അന്വേഷിക്കും: ഞാൻ ജീവകാലം മുഴുവൻ യഹോവയുടെ വീട്ടിൽ വസിച്ചിട്ട് его സുന്ദര്യം കണ്ടിട്ട് അവന്റെ ക്ഷേത്രത്തിൽ ചോദ്യം ചെയ്യട്ടെ.' },
-      { num: 14, en: 'Wait on the LORD: be of good courage, and he shall strengthen thine heart: wait, I say, on the LORD.', ml: 'യഹോവയെ പ്രത്യാശിച്ചുകൊള്ളുക; ധൈര്യപ്പെടുക, അവൻ നിന്��െ ഹൃദയം ഉറപ്പിക്കും; യഹോവയെ തന്നേ പ്രത്യാശിക്കുക.' }
-    ]
-  },
-  {
-    id: 'psalm91',
-    nameEn: 'Psalm 91',
-    nameMl: 'സങ്കീർത്തനം 91',
-    testament: 'OT',
-    topic: 'Under the Shadow of the Almighty',
-    verses: [
-      { num: 1, en: 'He that dwelleth in the secret place of the most High shall abide under the shadow of the Almighty.', ml: 'അത്യുന്നതന്റെ മട്ടിൽ വസിക്കുന്നവൻ സകലശക്തന്റെ നിഴലിൽ പാർക്കും.' },
-      { num: 2, en: 'I will say of the LORD, He is my refuge and my fortress: my God; in him will I trust.', ml: 'യഹോവയെക്കുറിച്ചു: അവൻ എന്റെ സങ്കേതവും കോട്ടയും; എന്റെ ദൈവം; അവനിൽ ഞാൻ ആശ്രയിക്കും.' },
-      { num: 4, en: 'He shall cover thee with his feathers, and under his wings shalt thou trust: his truth shall be thy shield and buckler.', ml: 'അവൻ നിനക്കു തൂവലുകൾപോലെ മൂടും; അവന്റെ ചിറകിൻ കീഴിൽ നീ ആശ്രയിക്കും; അവന്റെ സത്യമാണ് നിന്റെ ഒരു പരിചയും പരിചയം.' },
-      { num: 11, en: 'For he shall give his angels charge over thee, to keep thee in all thy ways.', ml: 'നിന്റെ സകലവഴികളിലും നിന്നെ കാക്കേണ്ടതിന്നു അവൻ തന്റെ ദൂതന്മാരെ നിനക്കു ചുമതല കൊടുക്കും.' }
-    ]
-  },
-  {
-    id: 'psalm121',
-    nameEn: 'Psalm 121',
-    nameMl: 'സങ്കീർത്തനം 121',
-    testament: 'OT',
-    topic: 'The Lord Is Thy Keeper & Shield',
-    verses: [
-      { num: 1, en: 'I will lift up mine eyes unto the hills, from whence cometh my help.', ml: 'ഞാൻ എന്റെ കണ്ണു പർവ്വതങ്ങളിലേക്കു ഉയർത്തുന്നു; എനിക്കു സഹായം എവിടെനിന്നു വരും.' },
-      { num: 2, en: 'My help cometh from the LORD, which made heaven and earth.', ml: 'എനിക്കു സഹായം ആകാശത്തെയും ഭൂമിയെയും ഉണ്ടാക്കിയ യഹോവയിങ്കൽനിന്നു വരുന്നു.' },
-      { num: 5, en: 'The LORD is thy keeper: the LORD is thy shade upon thy right hand.', ml: 'യഹോവ നിന്റെ പരിപാലകൻ; യഹോവ നിന്റെ വലത്തുഭാഗത്തു നിനക്കു തണൽ.' },
-      { num: 8, en: 'The LORD shall preserve thy going out and thy coming in from this time forth, and even for evermore.', ml: 'യഹോവ നിന്റെ പുറത്തിറങ്ങലും പുറത്തുവരലും ഇന്നു മുതൽ എന്നേക്കും കാക്കും.' }
-    ]
-  },
-  {
-    id: 'isaiah40',
-    nameEn: 'Isaiah 40',
-    nameMl: 'യെശയ്യാവ് 40',
-    testament: 'OT',
-    topic: 'Soaring on Eagles’ Wings With Renewed Power',
-    verses: [
-      { num: 28, en: 'Hast thou not known? hast thou not heard, that the everlasting God, the LORD, the Creator of the ends of the earth, fainteth not, neither is weary? there is no searching of his understanding.', ml: 'നീ അറിയുന്നില്ലയോ? നീ കേട്ടിട്ടില്ലയോ? നിത്യദൈവം, യഹോവ, ഭൂമിയുടെ അറ്റങ്ങൾ സൃഷ്ടിച്ചവൻ, ക്ഷീണം അല്ല; അവൻ അശ്രാന്തനുമാണ്.' },
-      { num: 29, en: 'He giveth power to the faint; and to them that have no might he increaseth strength.', ml: 'അ��ൻ ക്ഷീണിച്ചിരിക്കുന്നവന്നു ശക്തി നല്കുന്നു; ബലമില്ലാത്തവന്നു അവൻ ബലം വർദ്ധിപ്പിക്കുന്നു.' },
-      { num: 31, en: 'But they that wait upon the LORD shall renew their strength; they shall mount up with wings as eagles; they shall run, and not be weary; and they shall walk, and not faint.', ml: 'യഹോവയെ കാത്തിരിക്കുന്നവരോ പുതുശക്തി പ്രാപിക്കും; അവർ കഴുകന്മാരെപ്പോലെ പറക്കും; അവർ ഓടും, fatigueless; നടക്കും, ക്ഷീണം ഇല്ലാതെ.' }
-    ]
-  },
-  {
-    id: 'matthew5',
-    nameEn: 'Matthew 5',
-    nameMl: 'മത്തായി 5',
-    testament: 'NT',
-    topic: 'The Beatitudes, Salt & Light',
-    verses: [
-      { num: 3, en: 'Blessed are the poor in spirit: for theirs is the kingdom of heaven.', ml: 'ആത്മാവിൽ ദരിദ്രരായവർ ഭാഗ്യവാന്മാർ; സ്വർഗ്ഗരാജ്യം അവർക്കുള്ളതു.' },
-      { num: 8, en: 'Blessed are the pure in heart: for they shall see God.', ml: 'ഹൃദയശുദ്ധിയുള്ളവർ ഭാഗ്യവാന്മാർ; അവർ ദൈവത്തെ കാണും.' },
-      { num: 14, en: 'Ye are the light of the world. A city that is set on an hill cannot be hid.', ml: 'നിങ്ങൾ ലോകത്തിന്റെ വെളിച്ചം ആകുന്നു; മലമേൽ ഇരിക്കുന്ന പട്ടണം മറഞ്ഞിരിക്കുകയില്ല.' },
-      { num: 16, en: 'Let your light so shine before men, that they may see your good works, and glorify your Father which is in heaven.', ml: 'അങ്ങനെ തന്നേ നിങ്ങളുടെ വെളിച്ചം മനുഷ്യർ മുമ്പിൽ പ്രകാശിക്കട്ടെ, അവർ നിങ്ങളുടെ നല്ല പ്രവൃത്തികൾ കണ്ടു സ്വർഗ്ഗസ്ഥ പിതാവിനെ മഹിമപ്പെടുത്തട്ടെ.' }
-    ]
-  },
-  {
-    id: 'matthew6',
-    nameEn: 'Matthew 6',
-    nameMl: 'മത്തായി 6',
-    testament: 'NT',
-    topic: 'Seeking God’s Kingdom First Over Worry',
-    verses: [
-      { num: 26, en: 'Behold the fowls of the air: for they sow not, neither do they reap, nor gather into barns; yet your heavenly Father feedeth them. Are ye not much better than they?', ml: 'ആകാശത്തിലെ പറവകളെ നോക്കുവിൻ; അവ വിതെയ്ക്കുന്നില്ല, കൊയ്യുന്നില്ല, കളപ്പുരയിലേക്കു കൂട്ടുന്നതുമില്ല; അതുപോലെ നിങ്ങളുടെ സ്വർഗ്ഗസ്ഥ പിതാവ് അവരെ പോഷിക്കുന്നു; നിങ്ങൾ അവരെക്കാൾ നന്നല്ലോ?' },
-      { num: 33, en: 'But seek ye first the kingdom of God, and his righteousness; and all these things shall be added unto you.', ml: 'മുമ്പെ ദൈവരാജ്യവും അവന്റെ നീതിയും അന്വേഷിപ്പിൻ; ഇവയൊക്കെയും നിനക്കു കൂട്ടിച്ചേർക്കും.' },
-      { num: 34, en: 'Take therefore no thought for the morrow: for the morrow shall take thought for the things of itself. Sufficient unto the day is the evil thereof.', ml: 'അതുകൊണ്ടു നാളെയെക്കുറിച്ചു വിചാരിക്കരുതു; നാളെത്തന്നെ തനിക്കു വേണ്ടതായ് ചിന്തിക്കു��. ഓരോ ദിവസത്തിനും അതിന്റെ കഷ്ടം പറ്റിയതുതന്നെ മതി.' }
-    ]
-  },
-  {
-    id: 'luke14',
-    nameEn: 'Luke 14',
-    nameMl: 'ലൂക്കോസ് 14',
-    testament: 'NT',
-    topic: 'Counting the Cost & Faithful Stewardship',
-    verses: [
-      { num: 28, en: 'For which of you, intending to build a tower, sitteth not down first, and counteth the cost, whether he have sufficient to finish it?', ml: 'നിങ്ങളിൽ ആരെങ്കിലും ഒരു ഗോപുരം പണിവാൻ ഇച്ഛിച്ചാൽ ആദ്യം ഇരുന്ന് അതു പൂർത്തിയാക്കാൻ മതിയായതാണോ എന്ന് നോക്കേണ്ടതല്ലോ?' },
-      { num: 29, en: 'Lest haply, after he hath laid the foundation, and is not able to finish it, all that behold it begin to mock him,', ml: 'അടിസ്ഥാനം ഇട്ടശേഷം പൂർത്തിയാക്കാൻ കഴിയാതെയായാൽ, അതിനെ കണ്ടവരൊക്കെയും പരിഹസിക്കും.' }
-    ]
-  },
-  {
-    id: 'john1',
-    nameEn: 'John 1',
-    nameMl: 'യോഹന്നാൻ 1',
-    testament: 'NT',
-    topic: 'The Word Made Flesh & True Light',
-    verses: [
-      { num: 1, en: 'In the beginning was the Word, and the Word was with God, and the Word was God.', ml: 'ആദിയിൽ വചനം ഉണ്ടായിരുന്നു; വചനം ദൈവത്തോടു കൂടെയുണ്ടായിരുന്നു; വചനം ദൈവമായിരുന്നു.' },
-      { num: 4, en: 'In him was life; and the life was the light of men.', ml: 'അവനിൽ ജീവൻ ഉണ്ടായിരുന്നു; ജീവൻ മനുഷ്യരുടെ വെളിച്ചമായിരുന്നു.' },
-      { num: 5, en: 'And the light shineth in darkness; and the darkness comprehended it not.', ml: 'വെളിച്ചം ഇരുളിൽ പ്രകാശിക്കുന്നു; ഇരുളോ അതിനെ പിടിച്ചടക്കിയില്ല.' },
-      { num: 12, en: 'But as many as received him, to them gave he power to become the sons of God, even to them that believe on his name:', ml: 'അവനെ കൈക്കൊണ്ടു അവന്റെ നാമത്തിൽ വിശ്വസിക്കുന്ന ഏവർക്കും ദൈവമക്കൾ ആകാൻ അധികാരം കൊടുത്തു.' }
-    ]
-  },
-  {
-    id: 'romans12',
-    nameEn: 'Romans 12',
-    nameMl: 'റോമർ 12',
-    testament: 'NT',
-    topic: 'Mind Transformed by God & Active Love',
-    verses: [
-      { num: 1, en: 'I beseech you therefore, brethren, by the mercies of God, that ye present your bodies a living sacrifice, holy, acceptable unto God, which is your reasonable service.', ml: 'അതിനാൽ സഹോദരന്മാരേ, ദൈവത്തിന്റെ കരുണകൊണ്ട് നിങ്ങളുടെ ശരീരങ്ങളെ ചത്തവസ്തു പോലെ değil, ജീവിക്കുന്ന ഒരു അർ специальныхും കർത്താവിന്നു പ്രസാദമായതും ഒരു യുക്തിസഹമായ സേവനവും ആക്കുക.' },
-      { num: 2, en: 'And be not conformed to this world: but be ye transformed by the renewing of your mind, that ye may prove what is that good, and acceptable, and perfect, will of God.', ml: 'ഈ ലോകത്തിന്നു അനുരൂപരാകാതെ നിന്റെ മനസ്സിനെ പുതുക്കി ദൈവത്തിന്റെ നല്ലതും പ്രസാദവുമായതും പൂർണ്ണമായതുമായ إرാദം തിരിച്ചറിയുക.' },
-      { num: 10, en: 'Be kindly affectioned one to another with brotherly love; in honour preferring one another;', ml: 'സഹോദരപ്രീതിയിൽ തമ്മിൽ സ്നേഹപൂർവ്വം പെരുമാറുവിൻ; ബഹുമാനിക്കുന്നതിൽ മറ്റൊരാളെ മുന്നിൽ വയ്ക്കുക.' },
-      { num: 12, en: 'Rejoicing in hope; patient in tribulation; continuing instant in prayer;', ml: 'പ്രത്യാശയിൽ സന്തോഷിപ്പിൻ; കഷ്ടതയിൽ സഹിഷ്ണുതയുള്ളവരായിരിപ്പിൻ; പ്രാർത്ഥനയിൽ സ്ഥിരമായി ഇരിപ്പിൻ.' }
-    ]
-  },
-  {
-    id: 'galatians5',
-    nameEn: 'Galatians 5',
-    nameMl: 'ഗലാത്യർ 5',
-    testament: 'NT',
-    topic: 'The Fruit of the Spirit & Self-Control',
-    verses: [
-      { num: 22, en: 'But the fruit of the Spirit is love, joy, peace, longsuffering, gentleness, goodness, faith,', ml: 'ആത്മാവിന്റെ ഫലമോ: സ്നേഹം, സന്തോഷം, സമാധാനം, ദീർഘക്ഷമ, ദയ, പരോപകാരം, വിശ്വാസം,' },
-      { num: 23, en: 'Meekness, temperance: against such there is no law.', ml: 'സൌ���്യത, ഇന്ദ്രിയജയം; ഈ വകക്കു വിരോധമായി ഒരു ന്യായപ്രമാണവുമില്ല.' },
-      { num: 25, en: 'If we live in the Spirit, let us also walk in the Spirit.', ml: 'ആത്മാവിനാൽ നാം ജീവിക്കുന്നു എങ്കിൽ ആത്മാവിനെ അനുസരിച്ചു നടക്കയും.' }
-    ]
-  },
-  {
-    id: 'philippians4',
-    nameEn: 'Philippians 4',
-    nameMl: 'ഫിലിപ്പിയർ 4',
-    testament: 'NT',
-    topic: 'Replacing Anxiety with Prayer & Christ’s Peace',
-    verses: [
-      { num: 6, en: 'Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God.', ml: 'ഒന്നിനെക്കുറിച്ചും വിചാരപ്പെടരുതു; എല്ലാറ്റിലും പ്രാർത്ഥനയാലും സ്തോത്രയാലും നിങ്ങളുടെ അപേക്ഷകൾ ദൈവത്തിന് അറിയിക്കണം.' },
-      { num: 7, en: 'And the peace of God, which passeth all understanding, shall keep your hearts and minds through Christ Jesus.', ml: 'എന്നാൽ സകലബുദ്ധിയേയും കവിയുന്ന ദൈവസമാധാനം ക്രിസ്തുയേശുവിന്റെ ചുമലിൽ നിങ്ങളുടെ ഹൃദയങ്ങളെയും മനസ്സുകളെയും കാത്തുസൂക്ഷിക്കും.' },
-      { num: 13, en: 'I can do all things through Christ which strengtheneth me.', ml: 'എന്നെ ശക്തനാക്കുന്നവൻ മുഖാന്തരം ഞാൻ സകലത്തിന്നും മതിയാകുന്നു.' }
-    ]
-  },
-  {
-    id: 'colossians3',
-    nameEn: 'Colossians 3',
-    nameMl: 'കൊലൊസ്സ്യർ 3',
-    testament: 'NT',
-    topic: 'Working Diligently as Unto the Lord',
-    verses: [
-      { num: 17, en: 'And whatsoever ye do in word or deed, do all in the name of the Lord Jesus, giving thanks to God and the Father by him.', ml: 'വാക്കിലോ പ്രവൃത്തിയോ എന്തു ചെയ്താലും സകലവും കർത്താവായ യേശുവിന്റെ നാമത്തിൽ ചെയ്യുക; അവനുവഴി ദൈവത്തിന്നും പിതാവിന്നും സ്തോത്രം ചൊല്ലുക.' },
-      { num: 23, en: 'And whatsoever ye do, do it heartily, as to the Lord, and not unto men;', ml: 'നിങ്ങൾ ചെയ്യുന്നതു ഒക്കെയും മനുഷ്യർക്കെന്നല്ല കർത്താവിന്നു എന്നപോലെ മനോരഥത്തോടെയും ചെയ്യുക.' },
-      { num: 24, en: 'Knowing that of the Lord ye shall receive the reward of the inheritance: for ye serve the Lord Christ.', ml: 'കർത്താവിങ്കൽനിന്നു അവകാശം കിട്ടുമെന്ന് അറിയുന്നതുകൊണ്ടു; നിങ്ങൾ കർത്താവായ ക്രിസ്തുവിനെ സേവിക്കുന്നു.' }
-    ]
-  },
-  {
-    id: 'james1',
-    nameEn: 'James 1',
-    nameMl: 'യാക്കോബ് 1',
-    testament: 'NT',
-    topic: 'Listening Wisely & Being Doers of the Word',
-    verses: [
-      { num: 5, en: 'If any of you lack wisdom, let him ask of God, that giveth to all men liberally, and upbraideth not; and it shall be given him.', ml: 'നിങ്ങളിൽ ഒരുത്തന്നു ജ്ഞാനം കുറവാകുന്നു എങ്കിൽ എല്ലാ മനുഷ്യരോടും മിതമായും ഉപദേഷ്ടാവില്ലാതെ ദൈവത്തോട് ചോദിച്ചുകൊൾക; അവൻ കൊടുക്കും.' },
-      { num: 19, en: 'Wherefore, my beloved brethren, let every man be swift to hear, slow to speak, slow to wrath:', ml: 'പ്രിയ സഹോദരന്മാരേ, നിങ്ങളെ കേൾക്കാനു ചുരുക്കമുണ്ടാകട്ടെ; വാക്ക് പറയാൻ മന്ദബുദ്ധിയോടെ; ക്രോധത്തിൽ മന്ദബുദ്ധിയോടെ.' },
-      { num: 22, en: 'But be ye doers of the word, and not hearers only, deceiving your own selves.', ml: 'എന്നാൽ വചനം കേൾക്ക മാത്രം ചെയ്തുകൊണ്ടു തങ്ങളെത്തന്നേ ചതിക്കാതെ അതിന്മേൽ പ്രവർത്തിക്കുന്നവരായിരിപ്പിൻ.' }
-    ]
-  },
-  {
-    id: 'james2',
-    nameEn: 'James 2',
-    nameMl: 'യാക്കോബ് 2',
-    testament: 'NT',
-    topic: 'Faith Accompanied by Practical Action',
-    verses: [
-      { num: 14, en: 'What doth it profit, my brethren, though a man say he hath faith, and have not works? can faith save him?', ml: 'സഹോദരന്മാരേ, ഒരുത്തൻ തനിക്കു വിശ്വാസം ഉണ്���ു എന്നു പറകയും പ്രവൃത്തികൾ ഇല്ലാത്തതായാൽ അതു എന്തിന് ഫലം തരും? വിശ്വാസം അവനെ രക്ഷിക്കുമോ?' },
-      { num: 17, en: 'Even so faith, if it hath not works, is dead, being alone.', ml: 'അങ്ങനെ തന്നേ വിശ്വാസവും പ്രവൃത്തികൾ ഇല്ലാത്തതായാൽ സ്വതവേ നിർജ്ജീവമാണ്.' },
-      { num: 26, en: 'For as the body without the spirit is dead, so faith without works is dead also.', ml: 'ആത്മാവില്ലാത്ത ശരീരം നിർജ്ജീവമായിരിക്കുന്നതുപോലെ പ്രവൃത്തികളില്ലാത്ത വിശ്വാസം നിർജ്ജീവമാണ്.' }
+      { num: 1, en: 'My son, forget not my law; but let thine heart keep my commandments:', ml: 'മകനേ, എന്റെ ഉപദേശം മറക്കരുതു; നിന്റെ ഹൃദയം എന്റെ കല്പനകൾ സൂക്ഷിക്കട്ടെ:' },
+      { num: 2, en: 'For length of days, and long life, and peace, shall they add to thee.', ml: 'അവ ദീർഘായുസ്സും ജീവകാലവും സമാധാനവും നിനക്കു കൂട്ടിച്ചേർക്കും.' },
+      { num: 3, en: 'Let not mercy and truth forsake thee: bind them about thy neck; write them upon the table of thine heart:', ml: 'ദയയും സത്യം നിന്നെ വിട്ട് ഓടരുത്; അവയെ നിന്റെ കഴുത്തിൽ ചേർത്തു വയ്ക്ക; അവയെ നിന്റെ ഹൃദയപ്പന്തിയിൽ ചെപ്പും.' },
+      { num: 4, en: 'So shalt thou find favour and good understanding in the sight of God and man.', ml: 'അങ്ങനെ നീ ദൈവത്തിന്റെയും മനുഷ്യർക്കുമുമ്പിൽ അനുകൃപയും നല്ല ബുദ്ധിയും കണ്ടെത്തും.' },
+      { num: 5, en: 'Trust in the LORD with all thine heart; and lean not unto thine own understanding.', ml: 'പൂർണ്ണഹൃദയത്തോടെ യഹോവയിൽ ആശ്രയിക്ക; നിന്റെ സ്വന്തം ബുദ്ധിയിലും ചാരരുത്.' },
+      { num: 6, en: 'In all thy ways acknowledge him, and he shall direct thy paths.', ml: 'നിന്റെ എല്ലാ വഴികളിലും അവനെ നിനച്ചുകൊൾക; അവൻ നിന്റെ പാതകൾ നേര്വഴിയിക്കും.' },
+      { num: 7, en: 'Be not wise in thine own eyes: fear the LORD, and depart from evil.', ml: 'നിനക്കു തന്നേ നീ ജ്ഞാനിയായി തോന്നരുത്; യഹോവത്തിൽ ഭയം പുലർത്തി തിന്മയിൽ നിന്ന് വിട്ടു നിന്നു.' },
+      { num: 8, en: 'It shall be health to thy navel, and marrow to thy bones.', ml: 'അതു നിന്റെ ശരീരത്തിന്നു സൌഖ്യവും നിന്റെ അസ്ഥികളിലേക്കു കരുത്തും തരട്ടെ.' }
     ]
   }
 ];
 
-// Quick topic navigation shortcuts
 const SCRIPTURE_TOPICS = [
   { name: 'Faith & Trust', verse: 'Proverbs 3:5–6', bookId: 'proverbs3' },
   { name: 'Fear & Worry', verse: 'Philippians 4:6–7', bookId: 'philippians4' },
@@ -834,41 +359,15 @@ const SCRIPTURE_TOPICS = [
   { name: 'Action Over Delay', verse: 'James 2:17', bookId: 'james2' }
 ];
 
-// ==========================================================================
-// 5. VECTOR LANDSCAPE CANVAS HEADERS
-// ==========================================================================
 function ScenicCanvas({ type, className = "w-full h-full object-cover" }) {
-  // Natural landscape photography, with one distinct scene for each daily theme.
-  // The surrounding banner adds a dark readability overlay; photos remain atmospheric.
   const scenes = {
-    forest: {
-      src: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1800&q=85',
-      alt: 'Natural evergreen forest with soft morning light'
-    },
-    ocean: {
-      src: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1800&q=85',
-      alt: 'Blue ocean waves beneath a natural sky'
-    },
-    lavender: {
-      src: 'https://images.unsplash.com/photo-1499002238440-d264edd596ec?auto=format&fit=crop&w=1800&q=85',
-      alt: 'Quiet countryside in soft lavender evening light'
-    },
-    sunrise: {
-      src: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1800&q=85',
-      alt: 'Mountain lake at sunrise with natural warm light'
-    },
-    amber: {
-      src: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=85',
-      alt: 'Golden-hour natural mountain landscape'
-    },
-    teal: {
-      src: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=1800&q=85',
-      alt: 'Waterfall flowing through a lush green landscape'
-    },
-    night: {
-      src: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=85',
-      alt: 'Mountain peaks beneath a deep blue evening sky'
-    }
+    forest: { src: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1800&q=85', alt: 'Natural evergreen forest with soft morning light' },
+    ocean: { src: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1800&q=85', alt: 'Blue ocean waves beneath a natural sky' },
+    lavender: { src: 'https://images.unsplash.com/photo-1499002238440-d264edd596ec?auto=format&fit=crop&w=1800&q=85', alt: 'Quiet countryside in soft lavender evening light' },
+    sunrise: { src: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1800&q=85', alt: 'Mountain lake at sunrise with natural warm light' },
+    amber: { src: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=85', alt: 'Golden-hour natural mountain landscape' },
+    teal: { src: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=1800&q=85', alt: 'Waterfall flowing through a lush green landscape' },
+    night: { src: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=85', alt: 'Mountain peaks beneath a deep blue evening sky' }
   };
   const scene = scenes[type] || scenes.forest;
   return (
@@ -879,21 +378,15 @@ function ScenicCanvas({ type, className = "w-full h-full object-cover" }) {
       loading="eager"
       decoding="async"
       onError={(event) => {
-        // Keep a tasteful landscape-like fallback if the photo host is unavailable.
         event.currentTarget.style.display = 'none';
         if (event.currentTarget.parentElement) {
-          event.currentTarget.parentElement.style.background =
-            'linear-gradient(145deg, var(--theme-primary, #173F35), var(--theme-accent, #D5AD59), #10251f)';
+          event.currentTarget.parentElement.style.background = 'linear-gradient(145deg, var(--theme-primary, #173F35), var(--theme-accent, #D5AD59), #10251f)';
         }
       }}
     />
   );
 }
 
-// ==========================================================================
-// 6. MAIN APPLICATION COMPONENT
-// ==========================================================================
-// Local date key avoids UTC date drift and stale hard-coded demo dates.
 function getLocalDateKey(date = new Date()) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -902,48 +395,6 @@ function getLocalDateKey(date = new Date()) {
 }
 
 export default function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    try {
-      return sessionStorage.getItem(AUTH_SESSION_KEY) === 'true';
-    } catch {
-      return false;
-    }
-  });
-  const [loginForm, setLoginForm] = useState({ identifier: '', password: '' });
-  const [showPassword, setShowPassword] = useState(false);
-  const [loginError, setLoginError] = useState('');
-  const [loginLoading, setLoginLoading] = useState(false);
-
-  useEffect(() => {
-    try {
-      sessionStorage.setItem(AUTH_SESSION_KEY, String(isAuthenticated));
-    } catch {}
-  }, [isAuthenticated]);
-
-  const handleLoginSubmit = async (event) => {
-    event.preventDefault();
-
-    const identifierError = validateLoginIdentifier(loginForm.identifier);
-    const passwordError = validateLoginPassword(loginForm.password);
-    const nextError = identifierError || passwordError;
-
-    if (nextError) {
-      setLoginError(nextError);
-      return;
-    }
-
-    // This is intentionally a demo gate only.
-    // A real auth backend is required before production use.
-    setLoginLoading(true);
-    setLoginError('');
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    setLoginLoading(false);
-    setIsAuthenticated(true);
-    setLoginForm({ identifier: '', password: '' });
-    setShowPassword(false);
-  };
-
-  // A live clock forces date/theme recalculation on resume and at midnight.
   const [clockNow, setClockNow] = useState(() => new Date());
   const todayKey = getLocalDateKey(clockNow);
   const greeting = clockNow.getHours() < 12 ? 'Good morning!' : clockNow.getHours() < 17 ? 'Good afternoon!' : clockNow.getHours() < 21 ? 'Good evening!' : 'Good night!';
@@ -954,35 +405,20 @@ export default function App() {
     document.addEventListener('visibilitychange', refreshClock);
     return () => { window.clearInterval(timer); window.removeEventListener('focus', refreshClock); document.removeEventListener('visibilitychange', refreshClock); };
   }, []);
-  // Navigation tabs: 'home', 'tasks', 'bible', 'principles', 'more'
-  const [activeTab, setActiveTab] = useState('home');
 
-  // Subview inside the "More" tab (e.g. 'theme', 'questions', 'bibleBridge', 'principles', 'calendar', 'tasks', 'journal', 'progress', 'reminders', 'feedback', 'about')
+  const [activeTab, setActiveTab] = useState('home');
   const [moreSubView, setMoreSubView] = useState(null);
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    setLoginForm({ identifier: '', password: '' });
-    setLoginError('');
-    setShowPassword(false);
-    setMoreSubView(null);
-    setActiveTab('home');
-  };
-
-  // Theme configuration
   const [autoTheme, setAutoTheme] = useState(() => { try { return localStorage.getItem('transformer_auto_theme') !== 'false'; } catch { return true; } });
   const [manualThemeIndex, setManualThemeIndex] = useState(() => { try { const n = Number(localStorage.getItem('transformer_manual_theme')); return Number.isInteger(n) && n >= 0 && n < THEMES.length ? n : 1; } catch { return 1; } });
   useEffect(() => { try { localStorage.setItem('transformer_auto_theme', String(autoTheme)); localStorage.setItem('transformer_manual_theme', String(manualThemeIndex)); } catch {} }, [autoTheme, manualThemeIndex]);
 
-  // Toast alert system
   const [toast, setToast] = useState(null);
   const showToast = (msg) => {
     setToast(msg);
     setTimeout(() => setToast(null), 3200);
   };
 
-  // Browser notifications: work while this app is open/active. Web browsers cannot
-  // guarantee timed notifications after the tab/browser is fully closed without a push backend.
   const DEFAULT_REMINDERS = [
     { id: 'morning', title: 'Morning Prayer & Bible reading', time: '07:25', enabled: true },
     { id: 'progress', title: 'Check Task Progress & Focus', time: '13:00', enabled: true },
@@ -1019,7 +455,7 @@ export default function App() {
     try {
       const permission = Notification.permission === 'granted' ? 'granted' : await Notification.requestPermission();
       setNotificationPermission(permission);
-      if (permission === 'granted') { setNotificationsEnabled(true); showToast('Notifications enabled while Transformer is open.'); new Notification('Transformer reminders enabled', { body: 'You will see reminders at your scheduled times while this page stays open.', tag: 'transformer-reminders' }); }
+      if (permission === 'granted') { setNotificationsEnabled(true); showToast('Notifications enabled while Transformer is open.'); new Notification('Transformer reminders enabled', { body: 'You will receive scheduled reminders while this tab is open.' }); }
       else { setNotificationsEnabled(false); showToast('Notifications were not allowed. Enable them in your browser settings.'); }
     } catch { showToast('Could not enable notifications in this browser.'); }
   };
@@ -1041,7 +477,6 @@ export default function App() {
     return () => window.clearInterval(timer);
   }, [notificationsEnabled, notificationPermission, reminders]);
 
-  // Determine active theme
   const activeTheme = useMemo(() => {
     if (autoTheme) {
       const today = clockNow.getDay();
@@ -1050,7 +485,6 @@ export default function App() {
     return THEMES[manualThemeIndex] || THEMES[1];
   }, [autoTheme, manualThemeIndex, clockNow]);
 
-  // Tasks state with localStorage persistence
   const [tasks, setTasks] = useState(() => {
     try {
       const saved = localStorage.getItem('transformer_tasks');
@@ -1070,53 +504,25 @@ export default function App() {
     } catch (e) {}
   }, [tasks]);
 
-  // Timetable checkmarks
-  const [timetableChecks, setTimetableChecks] = useState({
-    '6:30 AM': true,
-    '9:00 AM': false,
-    '1:00 PM': false,
-    '2:00 PM': false,
-    '8:00 PM': false
-  });
-
-  // Calendar Date selection
+  const [timetableChecks, setTimetableChecks] = useState({ '6:30 AM': true, '9:00 AM': false, '1:00 PM': false, '2:00 PM': false, '8:00 PM': false });
   const [selectedCalendarDate, setSelectedCalendarDate] = useState(getLocalDateKey());
-
-  // Month switcher for standard clean calendar
   const [viewMonthOffset, setViewMonthOffset] = useState(0);
 
-  // Principle action checks & notes
-  const [principleActionChecks, setPrincipleActionChecks] = useState({
-    [`${getLocalDateKey()}-1`]: true,
-    [`${getLocalDateKey()}-9`]: false,
-    [`${getLocalDateKey()}-8`]: false
-  });
+  const [principleActionChecks, setPrincipleActionChecks] = useState({ [`${getLocalDateKey()}-1`]: true, [`${getLocalDateKey()}-9`]: false, [`${getLocalDateKey()}-8`]: false });
   const [principleNotes, setPrincipleNotes] = useState({});
 
-  // Journal entries
   const [journalEntries, setJournalEntries] = useState(() => {
     try {
       const saved = localStorage.getItem('transformer_journal');
       if (saved) return JSON.parse(saved);
     } catch (e) {}
     return [
-      {
-        id: 'j1',
-        date: todayKey,
-        title: 'Beginning the week with God',
-        category: 'Reflection',
-        reflection: 'Lord, give me strength to stay consistent with clinical duties and guard my time from distractions.',
-        prayer: 'Praying for wisdom in studies and peace at home.',
-        gratitude: 'Grateful for good health, family, and open doors.'
-      }
+      { id: 'j1', date: todayKey, title: 'Beginning the week with God', category: 'Reflection', reflection: 'Lord, give me strength to stay consistent with clinical duties and guard my time from distractions.', prayer: 'Praying for wisdom in studies and peace at home.', gratitude: 'Grateful for good health, family, and open doors.' }
     ];
   });
 
-  useEffect(() => {
-    try { localStorage.setItem('transformer_journal', JSON.stringify(journalEntries)); } catch (e) {}
-  }, [journalEntries]);
+  useEffect(() => { try { localStorage.setItem('transformer_journal', JSON.stringify(journalEntries)); } catch (e) {} }, [journalEntries]);
 
-  // Daily Questions state
   const [questionAnswers, setQuestionAnswers] = useState(() => {
     try {
       const saved = localStorage.getItem('transformer_questions');
@@ -1133,13 +539,10 @@ export default function App() {
     };
   });
 
-  useEffect(() => {
-    try { localStorage.setItem('transformer_questions', JSON.stringify(questionAnswers)); } catch (e) {}
-  }, [questionAnswers]);
+  useEffect(() => { try { localStorage.setItem('transformer_questions', JSON.stringify(questionAnswers)); } catch (e) {} }, [questionAnswers]);
 
-  // Bible Reader State
   const [selectedBook, setSelectedBook] = useState(EXPANDED_BIBLE_BOOKS[0]);
-  const [bibleLanguage, setBibleLanguage] = useState('bilingual'); // 'bilingual', 'en', 'ml'
+  const [bibleLanguage, setBibleLanguage] = useState('bilingual');
   const [bibleFontSize, setBibleFontSize] = useState('text-sm');
   const [savedVerses, setSavedVerses] = useState(['Isaiah 22:22', 'Proverbs 3:5–6', 'Psalm 23:1']);
   const [verseHighlights, setVerseHighlights] = useState({});
@@ -1153,7 +556,6 @@ export default function App() {
   const [fullBibleRetry, setFullBibleRetry] = useState(0);
   const [questionReviewVisible, setQuestionReviewVisible] = useState(false);
 
-  // Load complete KJV chapters on demand. This requires an internet connection.
   useEffect(() => {
     let cancelled = false;
     async function loadChapter() {
@@ -1177,53 +579,29 @@ export default function App() {
     return () => { cancelled = true; };
   }, [fullBibleBook, fullBibleChapter, fullBibleRetry]);
 
-  // Modals
   const [activePrincipleModal, setActivePrincipleModal] = useState(null);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [taskForm, setTaskForm] = useState({ title: '', time: '09:00 AM', deadline: '', priority: 'Medium', category: 'Studies', principleId: 1 });
   const [shareVerseModal, setShareVerseModal] = useState(null);
 
-  // Feedback form
   const [feedbackCategory, setFeedbackCategory] = useState('Feature suggestion');
   const [feedbackRating, setFeedbackRating] = useState(5);
   const [feedbackMessage, setFeedbackMessage] = useState('');
 
-  // --------------------------------------------------------------------------
-  // CALCULATED METRICS
-  // --------------------------------------------------------------------------
   const todayTasks = tasks.filter(t => t.date === todayKey);
   const completedToday = todayTasks.filter(t => t.completed).length;
   const totalToday = todayTasks.length;
   const progressPercent = totalToday > 0 ? Math.round((completedToday / totalToday) * 100) : 0;
 
-  // Filtered bible verses
   const filteredVerses = useMemo(() => {
     if (!bibleSearchQuery.trim()) return selectedBook.verses;
     const q = bibleSearchQuery.toLowerCase();
     return selectedBook.verses.filter(v => v.en.toLowerCase().includes(q) || v.ml.toLowerCase().includes(q));
   }, [selectedBook, bibleSearchQuery]);
 
-  // --------------------------------------------------------------------------
-  // HANDLERS
-  // --------------------------------------------------------------------------
   const toggleTask = (id) => {
     setTasks(prev => prev.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
   };
-
-  // The app is authenticated only after the demo login screen is successfully passed.
-  if (!isAuthenticated) {
-    return (
-      <LoginScreen
-        loginForm={loginForm}
-        setLoginForm={setLoginForm}
-        showPassword={showPassword}
-        setShowPassword={setShowPassword}
-        loginError={loginError}
-        loginLoading={loginLoading}
-        onSubmit={handleLoginSubmit}
-      />
-    );
-  }
 
   const handleSaveTask = () => {
     if (!taskForm.title.trim()) {
@@ -1275,10 +653,7 @@ export default function App() {
     showToast('Priorities pushed directly into Tasks!');
   };
 
-  const copyEmail = () => {
-    navigator.clipboard?.writeText('jestinp843@gmail.com');
-    showToast('Email jestinp843@gmail.com copied to clipboard!');
-  };
+  const copyEmail = () => navigator.clipboard?.writeText('jestinp843@gmail.com') && showToast('Email jestinp843@gmail.com copied to clipboard!');
 
   const handleFeedbackSubmit = () => {
     if (!feedbackMessage.trim()) {
@@ -1286,11 +661,7 @@ export default function App() {
       return;
     }
     const subject = encodeURIComponent(`Transformer feedback — ${feedbackCategory}`);
-    const body = encodeURIComponent(
-      `Category: ${feedbackCategory}\nRating: ${feedbackRating}/5\n\n${feedbackMessage.trim()}`
-    );
-    // No feedback server is configured in this prototype. Open the user's email app
-    // so they can review and send the message themselves.
+    const body = encodeURIComponent(`Category: ${feedbackCategory}\nRating: ${feedbackRating}/5\n\n${feedbackMessage.trim()}`);
     window.location.href = `mailto:jestinp843@gmail.com?subject=${subject}&body=${body}`;
     showToast('Email draft opened. Review it and press Send in your email app.');
   };
@@ -1302,6 +673,11 @@ export default function App() {
     const nextColor = colors[nextIndex];
     setVerseHighlights({ ...verseHighlights, [verseKey]: nextColor });
     showToast(nextColor ? `Highlighted in ${nextColor}` : 'Highlight cleared');
+  };
+
+  const handleLogout = () => {
+    setMoreSubView(null);
+    setActiveTab('home');
   };
 
   return (
@@ -1333,7 +709,6 @@ export default function App() {
         .theme-app button:focus-visible, .theme-app input:focus-visible, .theme-app select:focus-visible { outline: 2px solid var(--theme-accent); outline-offset: 2px; }
       `}</style>
 
-      {/* Toast Alert */}
       {toast && (
         <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-[#173F35] text-white px-5 py-2.5 rounded-full shadow-2xl border border-[#D5AD59] flex items-center space-x-2 text-xs font-bold">
           <Sparkles className="w-4 h-4 text-[#D5AD59]" />
@@ -1341,11 +716,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Main Container constrained for mobile/desktop layout */}
       <div className="w-full max-w-md mx-auto bg-white min-h-screen shadow-2xl flex flex-col relative pb-20">
-        {/* =================================================================== */}
-        {/* TOP BRAND HEADER (Fixed Forest Green & Gold with Pilgrim Emblem)   */}
-        {/* =================================================================== */}
         <header className="h-[74px] bg-[#173F35] border-b border-[#D5AD59]/30 px-4 flex items-center justify-between text-white shrink-0 sticky top-0 z-30 shadow-md">
           <div
             className="flex items-center space-x-3 cursor-pointer group"
@@ -1354,114 +725,78 @@ export default function App() {
             <TransformerEmblem size="md" />
             <div>
               <div className="flex items-center space-x-1.5">
-                <span className="font-serif font-black tracking-widest text-lg text-white group-hover:text-[#D5AD59] transition-colors">
-                  TRANSFORMER
-                </span>
+                <span className="font-serif font-black tracking-widest text-lg text-white group-hover:text-[#D5AD59] transition-colors">TRANSFORMER</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-[#D5AD59]" />
               </div>
-              <p className="text-[10px] text-[#D5AD59] font-medium tracking-wide uppercase">
-                Faith • Discipline • Growth
-              </p>
+              <p className="text-[10px] text-[#D5AD59] font-medium tracking-wide uppercase">Faith • Discipline • Growth</p>
             </div>
           </div>
 
           <div className="flex items-center space-x-2">
-            <button
-              onClick={() => { setActiveTab('more'); setMoreSubView('reminders'); }}
-              className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/15 flex items-center justify-center text-white relative transition"
-              title="Notifications"
-            >
+            <button onClick={() => { setActiveTab('more'); setMoreSubView('reminders'); }} className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/15 flex items-center justify-center text-white relative transition" title="Notifications">
               <Bell className="w-4 h-4" />
               <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#D5AD59] ring-2 ring-[#173F35]" />
             </button>
-
-            <button
-              onClick={() => { setActiveTab('more'); setMoreSubView(null); }}
-              className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#D5AD59] to-amber-200 p-[1.5px] shadow-sm hover:scale-105 transition"
-              title="Profile"
-            >
+            <button onClick={() => { setActiveTab('more'); setMoreSubView(null); }} className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#D5AD59] to-amber-200 p-[1.5px] shadow-sm hover:scale-105 transition" title="Profile">
               <div className="w-full h-full rounded-full bg-[#173F35] flex items-center justify-center text-[#D5AD59]">
                 <User className="w-4 h-4" />
               </div>
             </button>
-            <button
-              onClick={handleLogout}
-              className="rounded-full border border-[#D5AD59]/50 bg-white/10 px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[#D5AD59] transition hover:bg-white/20"
-              title="Log out"
-            >
-              Logout
-            </button>
+            <button onClick={handleLogout} className="rounded-full border border-[#D5AD59]/50 bg-white/10 px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[#D5AD59] transition hover:bg-white/20" title="Log out">Logout</button>
           </div>
         </header>
 
-        {/* =================================================================== */}
-        {/* MAIN BODY SWITCHER (Tabs: Home, Tasks, Bible, Principles, More)    */}
-        {/* =================================================================== */}
         <div className="flex-1 overflow-y-auto no-scrollbar">
-          {/* ----------------------------------------------------------------- */}
-          {/* TAB 1: HOME SECTION                                               */}
-          {/* ----------------------------------------------------------------- */}
           {activeTab === 'home' && (
             <div className="space-y-4 pb-6 animate-in fade-in duration-150">
-              {/* existing content unchanged */}
+              <div className="px-4 pt-4">
+                <div className="rounded-3xl overflow-hidden border border-[#E7DEC8] bg-[#F6F0E3] shadow-sm">
+                  <div className="p-4 bg-[#173F35] text-white">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <p className="text-[10px] uppercase tracking-[0.18em] text-[#D5AD59]">Today</p>
+                        <h2 className="mt-2 text-xl font-black font-serif">{greeting}</h2>
+                      </div>
+                      <button onClick={() => setActiveTab('more')} className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[#D5AD59]">View plan</button>
+                    </div>
+                  </div>
+                  <div className="p-4">
+                    <div className="flex items-center justify-between text-xs uppercase tracking-[0.12em] text-slate-500">
+                      <span>Daily rhythm</span>
+                      <span>{progressPercent}% complete</span>
+                    </div>
+                    <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-slate-200">
+                      <div className="h-full rounded-full bg-[#173F35]" style={{ width: `${progressPercent}%` }} />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
-
-          {/* rest of app unchanged ... */}
         </div>
 
-        {/* fixed bottom nav */}
         <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto h-16 bg-[#173F35] border-t border-[#D5AD59]/30 px-2 flex items-center justify-between text-white z-40 shadow-2xl">
-          <button
-            onClick={() => { setActiveTab('home'); setMoreSubView(null); }}
-            className={`flex-1 flex flex-col items-center justify-center py-1 transition relative ${
-              activeTab === 'home' ? 'text-[#D5AD59] font-black' : 'text-slate-300 hover:text-white'
-            }`}
-          >
+          <button onClick={() => { setActiveTab('home'); setMoreSubView(null); }} className={`flex-1 flex flex-col items-center justify-center py-1 transition relative ${activeTab === 'home' ? 'text-[#D5AD59] font-black' : 'text-slate-300 hover:text-white'}`}>
             <Home className="w-5 h-5" />
             <span className="text-[10px] mt-0.5">Home</span>
             {activeTab === 'home' && <span className="w-6 h-0.5 bg-[#D5AD59] rounded-full absolute bottom-1" />}
           </button>
-
-          <button
-            onClick={() => { setActiveTab('tasks'); setMoreSubView(null); }}
-            className={`flex-1 flex flex-col items-center justify-center py-1 transition relative ${
-              activeTab === 'tasks' ? 'text-[#D5AD59] font-black' : 'text-slate-300 hover:text-white'
-            }`}
-          >
+          <button onClick={() => { setActiveTab('tasks'); setMoreSubView(null); }} className={`flex-1 flex flex-col items-center justify-center py-1 transition relative ${activeTab === 'tasks' ? 'text-[#D5AD59] font-black' : 'text-slate-300 hover:text-white'}`}>
             <CheckSquare className="w-5 h-5" />
             <span className="text-[10px] mt-0.5">Tasks</span>
             {activeTab === 'tasks' && <span className="w-6 h-0.5 bg-[#D5AD59] rounded-full absolute bottom-1" />}
           </button>
-
-          <button
-            onClick={() => { setActiveTab('bible'); setMoreSubView(null); }}
-            className={`flex-1 flex flex-col items-center justify-center py-1 transition relative ${
-              activeTab === 'bible' ? 'text-[#D5AD59] font-black' : 'text-slate-300 hover:text-white'
-            }`}
-          >
+          <button onClick={() => { setActiveTab('bible'); setMoreSubView(null); }} className={`flex-1 flex flex-col items-center justify-center py-1 transition relative ${activeTab === 'bible' ? 'text-[#D5AD59] font-black' : 'text-slate-300 hover:text-white'}`}>
             <BookOpen className="w-5 h-5" />
             <span className="text-[10px] mt-0.5">Bible</span>
             {activeTab === 'bible' && <span className="w-6 h-0.5 bg-[#D5AD59] rounded-full absolute bottom-1" />}
           </button>
-
-          <button
-            onClick={() => { setActiveTab('principles'); setMoreSubView(null); }}
-            className={`flex-1 flex flex-col items-center justify-center py-1 transition relative ${
-              activeTab === 'principles' ? 'text-[#D5AD59] font-black' : 'text-slate-300 hover:text-white'
-            }`}
-          >
+          <button onClick={() => { setActiveTab('principles'); setMoreSubView(null); }} className={`flex-1 flex flex-col items-center justify-center py-1 transition relative ${activeTab === 'principles' ? 'text-[#D5AD59] font-black' : 'text-slate-300 hover:text-white'}`}>
             <Compass className="w-5 h-5" />
             <span className="text-[10px] mt-0.5">Principles</span>
             {activeTab === 'principles' && <span className="w-6 h-0.5 bg-[#D5AD59] rounded-full absolute bottom-1" />}
           </button>
-
-          <button
-            onClick={() => { setActiveTab('more'); setMoreSubView(null); }}
-            className={`flex-1 flex flex-col items-center justify-center py-1 transition relative ${
-              activeTab === 'more' ? 'text-[#D5AD59] font-black' : 'text-slate-300 hover:text-white'
-            }`}
-          >
+          <button onClick={() => { setActiveTab('more'); setMoreSubView(null); }} className={`flex-1 flex flex-col items-center justify-center py-1 transition relative ${activeTab === 'more' ? 'text-[#D5AD59] font-black' : 'text-slate-300 hover:text-white'}`}>
             <MoreHorizontal className="w-5 h-5" />
             <span className="text-[10px] mt-0.5">More</span>
             {activeTab === 'more' && <span className="w-6 h-0.5 bg-[#D5AD59] rounded-full absolute bottom-1" />}
